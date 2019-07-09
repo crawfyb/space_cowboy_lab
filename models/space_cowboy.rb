@@ -52,4 +52,25 @@ def self.delete_all()
   db.close
 end
 
+def self.find_by_name(name)
+  db = PG.connect({dbname: 'space_cowboy', host: 'localhost'})
+  sql = 'SELECT * FROM space_cowboy WHERE name = $1'
+  values = [name]
+  db.prepare('find_name', sql)
+  val = db.exec_prepared('find_name', values)
+  db.close
+  return val.map {|cowboy|SpaceCowboy.new(cowboy)
+end
+
+def self.find_cowboy_by_id(id)
+  db = PG.connect({dbname: 'space_cowboy', host: 'localhost'})
+  sql = 'SELECT * FROM space_cowboy WHERE id = $1'
+  values = [id]
+  db.prepare('find_cowboy', sql)
+  val = db.exec_prepared('find_cowboy', values)
+  db.close
+  return val
+end
+
+
 end
